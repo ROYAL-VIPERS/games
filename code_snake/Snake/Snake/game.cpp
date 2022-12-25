@@ -10,7 +10,7 @@
 using namespace std;
 
 bool gameOver;
-const int width = 40;
+const int width = 80;
 const int height = 20;
 int x, y, fruitX, fruitY, score;
 int tailX[100], tailY[100];
@@ -18,6 +18,132 @@ int nTail;
 enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
 eDirection dir;
 
+void snake();
+void turtle();
+
+//////////////////////////// Основная функция меню /////////////
+//Перемещаем курсор
+HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE); //Получение дескриптора консоли
+void GoToXY(short x, short y)
+{
+	SetConsoleCursorPosition(hStdOut, { x, y }); // Текстовый курсор в точку x,y
+}
+
+//Прячем курсор
+void ConsoleCursorVisible(bool show, short size)
+{
+	CONSOLE_CURSOR_INFO structCursorInfo;
+	GetConsoleCursorInfo(hStdOut, &structCursorInfo);
+	structCursorInfo.bVisible = show; // изменяем видимость курсора
+	structCursorInfo.dwSize = size; // изменяем размер курсора
+	SetConsoleCursorInfo(hStdOut, &structCursorInfo);
+}
+void menu() {
+	GoToXY(50, 10);
+	ConsoleCursorVisible(false, 100);
+	string Menu[] = { "Играть в Snake", "Играть в Turtle", "Выход" };
+	int active = 0;
+
+	char ch;
+	while (true)
+	{
+		//logo
+		SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		GoToXY(20, 1);
+		cout << " _____  _____  __ __  _____  __       _____  __  _____  _____  _____  _____" << endl;
+		GoToXY(20, 2);
+		cout << "| __  ||     ||  |  ||  _  ||  |     |  |  ||  ||  _  ||   __|| __  ||   __|" << endl;
+		GoToXY(20, 3);
+		cout << "|    -||  |  ||_   _||     ||  |__   |  |  ||  ||   __||   __||    -||__   |" << endl;
+		GoToXY(20, 4);
+		cout << "|__|__||_____|  |_|  |__|__||_____|   \\___/ |__||__|   |_____||__|__||_____|";
+
+		int x = 50, y = 13;
+		GoToXY(x, y);
+		for (int i = 0; i < size(Menu); i++)
+		{
+			if (i == active) SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			else SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			GoToXY(x, y++);
+			cout << Menu[i] << endl;
+		}
+		ch = _getch();
+		if (ch == -32) ch = _getch(); // Отлавливаем стрелочки
+		switch (ch)
+		{
+		case ESCAPE: // escape
+			exit(0);
+		case 'w':
+		case 'W':
+		case 'ц':
+		case 'Ц':
+			if (active > 0) {
+				active--;
+			}
+			break;
+		case 's':
+		case 'S':
+		case 'ы':
+		case 'Ы':
+			if (active < size(Menu) - 1) {
+				active++;
+			}
+			break;
+		case ENTER:
+			switch (active)
+			{
+			case 0:
+				system("CLS");
+				GoToXY(x, y);
+				SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+				snake();
+				system("CLS");
+				break;
+			case 1:
+				system("CLS");
+				GoToXY(x, y);
+				SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+				turtle();
+				system("CLS");
+				break;
+			case 2:
+				system("cls");
+				SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+				GoToXY(40, 1);
+				cout << "                             ,---." << endl;
+				GoToXY(40, 2);
+				cout << " ,-----.                     |   |" << endl;
+				GoToXY(40, 3);
+				cout << " |  |) /_  ,--. ,--.  ,---.  |  .'" << endl;
+				GoToXY(40, 4);
+				cout << " |  .-.  \\  \\  '  /  | .-. : |  | " << endl;
+				GoToXY(40, 5);
+				cout << " |  '--' /   \\   '   \\   --. `--' " << endl;
+				GoToXY(40, 6);
+				cout << " `------'  .-'  /     `----' .--. " << endl;
+				GoToXY(40, 7);
+				cout << "           `---'             '--' " << endl;
+
+				exit(0);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+int main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	//Заголовок консольного окна
+	SetConsoleTitle(L"Game Launcher ©Royal Vipers - 2022");
+
+	menu();
+
+	//system("pause");
+}
 
 void SetUp()
 {
@@ -57,7 +183,7 @@ void Draw()
 			}
 			else if (i == fruitY && j == fruitX)
 			{
-				cout << "$";
+				cout << "O";
 			}
 			else {
 				bool paint = false;
@@ -94,32 +220,36 @@ void Draw()
 
 void Input()
 {
+	
 	if (_kbhit())
 	{
-		switch (_getch())
+		char ch = _getch();
+		if (ch == -32) ch = _getch();
+		switch (ch)
 		{
 			case 'w':
-			{
-				dir = UP;
-				break;
-			}
+			case 'W':
+			case 'ц':
+			case 'Ц': 
+				dir = UP; break;
+
+			case 'a': 
+			case 'A': 
+			case 'ф': 
+			case 'Ф': 
+				dir = LEFT; break;
 				
-			case 'a':
-			{
-				dir = LEFT;
-				break; }
+			case 's': 
+			case 'S': 
+			case 'ы': 
+			case 'Ы': 
+				dir = DOWN; break;
 				
-			case 's':
-			{
-				dir = DOWN;
-				break;
-			}
-				
-			case 'd':
-			{
-				dir = RIGHT;
-				break;
-			}
+			case 'd': 
+			case 'D': 
+			case 'в': 
+			case 'В': 
+				dir = RIGHT; break;
 				
 			case ESCAPE:
 			{
@@ -203,13 +333,30 @@ void Logic()
 	
 	if (gameOver)
 	{
-		cout << "Для продолжения нажмите любую клавишу... (esc - выход)" << endl;
+		system("cls");
+		GoToXY(50, 10);
+		ConsoleCursorVisible(false, 100);
+		SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		GoToXY(20, 1);
+		cout << "  ____" << endl;
+		GoToXY(20, 2);
+		cout << " /  __\\  _____  _______   _____    _____  _____  ____  _____" << endl;
+		GoToXY(20, 3);
+		cout << "|  |___ |  _  ||       \\ |   __|  |     ||  |  ||  __|| __  |" << endl;
+		GoToXY(20, 4);
+		cout << "|   |  ||     ||  |  |  ||   __|  |  |  ||  |  ||  __||    -|" << endl;
+		GoToXY(20, 5);
+		cout << " \\____/ |__|__||__|__|__||_____|  |_____| \\___/ |____||__|__|"<< endl;
+		GoToXY(21, 6);
+		cout << "Нажмите любую клавишу, чтобы начать сначала... (esc - выход)" << endl;
 	}
 }
 //Основная функция змейки
 void snake() {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	bool restart = true;
 	while (restart)
 	{
@@ -326,127 +473,4 @@ void turtle() {
 			break;
 		}
 	}
-}
-//////////////////////////// Основная функция меню /////////////
-//Перемещаем курсор
-HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE); //Получение дескриптора консоли
-void GoToXY(short x, short y)
-{
-	SetConsoleCursorPosition(hStdOut, { x, y }); // Текстовый курсор в точку x,y
-}
-
-//Прячем курсор
-void ConsoleCursorVisible(bool show, short size)
-{
-	CONSOLE_CURSOR_INFO structCursorInfo;
-	GetConsoleCursorInfo(hStdOut, &structCursorInfo);
-	structCursorInfo.bVisible = show; // изменяем видимость курсора
-	structCursorInfo.dwSize = size; // изменяем размер курсора
-	SetConsoleCursorInfo(hStdOut, &structCursorInfo);
-}
-void menu() {
-	GoToXY(50, 10);
-	ConsoleCursorVisible(false, 100);
-	string Menu[] = { "Играть в Snake", "Играть в Turtle", "Выход" };
-	int active = 0;
-
-	char ch;
-	while (true)
-	{
-		//logo
-		SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-		GoToXY(20, 1);
-		cout << " _____  _____  __ __  _____  __       _____  __  _____  _____  _____  _____" << endl;
-		GoToXY(20, 2);
-		cout << "| __  ||     ||  |  ||  _  ||  |     |  |  ||  ||  _  ||   __|| __  ||   __|" << endl;
-		GoToXY(20, 3);
-		cout << "|    -||  |  ||_   _||     ||  |__   |  |  ||  ||   __||   __||    -||__   |" << endl;
-		GoToXY(20, 4);
-		cout << "|__|__||_____|  |_|  |__|__||_____|   \\___/ |__||__|   |_____||__|__||_____|";
-
-		int x = 50, y = 13;
-		GoToXY(x, y);
-		for (int i = 0; i < size(Menu); i++)
-		{
-			if (i == active) SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY );
-			else SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-			GoToXY(x, y++);
-			cout << Menu[i] << endl;
-		}
-		ch = _getch();
-		if (ch == -32) ch = _getch(); // Отлавливаем стрелочки
-		switch (ch)
-		{
-		case ESCAPE: // escape
-			exit(0);
-		case 'w':
-		case 'W':
-		case 'ц':
-		case 'Ц':
-			if (active > 0) {
-				active--;
-			}
-			break;
-		case 's':
-		case 'S':
-		case 'ы':
-		case 'Ы':
-			if (active < size(Menu) - 1) {
-				active++;
-			}
-			break;
-		case ENTER:
-			switch (active)
-			{
-			case 0:
-				system("CLS");
-				GoToXY(x, y);
-				SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-				snake();
-				system("CLS");
-				break;
-			case 1:
-				system("CLS");
-				GoToXY(x, y);
-				SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-				turtle();
-				system("CLS");
-				break;
-			case 2:
-				system("cls");
-				SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-				GoToXY(40, 1);
-				cout << "                             ,---." << endl;
-				GoToXY(40, 2);
-				cout << " ,-----.                     |   |" << endl;
-				GoToXY(40, 3);
-				cout << " |  |) /_  ,--. ,--.  ,---.  |  .'" << endl;
-				GoToXY(40, 4);
-				cout << " |  .-.  \\  \\  '  /  | .-. : |  | " << endl;
-				GoToXY(40, 5);
-				cout << " |  '--' /   \\   '   \\   --. `--' " << endl;
-				GoToXY(40, 6);
-				cout << " `------'  .-'  /     `----' .--. " << endl;
-				GoToXY(40, 7);
-				cout << "           `---'             '--' " << endl;
-
-				exit(0);
-			}
-			break;
-		default:
-			break;
-		}
-	}
-}
-
-int main()
-{
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-	//Заголовок консольного окна
-	SetConsoleTitle(L"Game Launcher ©Royal Vipers - 2022");
-	
-	menu();
-	
-	//system("pause");
 }
