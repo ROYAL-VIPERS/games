@@ -1,28 +1,15 @@
-﻿Сборка начата 26.12.2022 15:06:27.
-Уровень детализации журнала: Normal.     1>Проект "D:\лабы програмная инженерия\games\code_snake\Snake\Snake\Snake.vcxproj" в узле 2 (целевые объекты Build).
-     1>InitializeBuildStatus:
-         Создание "x64\Debug\Snake.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
-       ClCompile:
-         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\bin\HostX64\x64\CL.exe /c /ZI /JMC /nologo /W3 /WX- /diagnostics:column /sdl /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /permissive- /Fo"x64\Debug\\" /Fd"x64\Debug\vc143.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt game.cpp
-         game.cpp
-     1>D:\лабы програмная инженерия\games\code_snake\Snake\Snake\game.cpp(371,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-     1>D:\лабы програмная инженерия\games\code_snake\Snake\Snake\game.cpp(472,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-       Link:
-         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\bin\HostX64\x64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\лабы програмная инженерия\games\code_snake\Snake\x64\Debug\Snake.exe" /INCREMENTAL /ILK:"x64\Debug\Snake.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\лабы програмная инженерия\games\code_snake\Snake\x64\Debug\Snake.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\лабы програмная инженерия\games\code_snake\Snake\x64\Debug\Snake.lib" /MACHINE:X64 x64\Debug\game.obj
-         Snake.vcxproj -> D:\лабы програмная инженерия\games\code_snake\Snake\x64\Debug\Snake.exe
-       FinalizeBuildStatus:
-         Файл "x64\Debug\Snake.tlog\unsuccessfulbuild" удаляется.
-         Обращение к "x64\Debug\Snake.tlog\Snake.lastbuildstate".
-     1>Сборка проекта "D:\лабы програмная инженерия\games\code_snake\Snake\Snake\Snake.vcxproj" завершена (целевые объекты Build).
+﻿Сборка начата 27.12.2022 0:11:17.
+Уровень детализации журнала: Normal.     1>Проект "C:\Users\user\Desktop\змея\code_snake\Snake\Snake\Snake.vcxproj" в узле 2 (целевые объекты Build).
+     1>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(439,5): error MSB8020: Не удается найти средства сборки для v143 (набор инструментов платформы = "v143"). Чтобы выполнить сборку с использованием средств сборки v143 установите средства сборки v143.  Кроме того, можно выполнить обновление до текущей версии средств Visual Studio, перейдя в меню "Проект" или щелкнув решение правой кнопкой мыши и выбрав "Обновить решение...".
+     1>Сборка проекта "C:\Users\user\Desktop\змея\code_snake\Snake\Snake\Snake.vcxproj" завершена (целевые объекты Build) с ошибкой.
 
-Сборка успешно завершена.
+Ошибка сборки.
 
-       "D:\лабы програмная инженерия\games\code_snake\Snake\Snake\Snake.vcxproj" (целевой объект Build ) (1) ->
-       (Целевой объект ClCompile) -> 
-         D:\лабы програмная инженерия\games\code_snake\Snake\Snake\game.cpp(371,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-         D:\лабы програмная инженерия\games\code_snake\Snake\Snake\game.cpp(472,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+       "C:\Users\user\Desktop\змея\code_snake\Snake\Snake\Snake.vcxproj" (целевой объект Build ) (1) ->
+       (Целевой объект PrepareForBuild) -> 
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(439,5): error MSB8020: Не удается найти средства сборки для v143 (набор инструментов платформы = "v143"). Чтобы выполнить сборку с использованием средств сборки v143 установите средства сборки v143.  Кроме того, можно выполнить обновление до текущей версии средств Visual Studio, перейдя в меню "Проект" или щелкнув решение правой кнопкой мыши и выбрав "Обновить решение...".
 
-    Предупреждений: 2
-    Ошибок: 0
+    Предупреждений: 0
+    Ошибок: 1
 
-Прошло времени 00:00:01.20
+Прошло времени 00:00:00.06

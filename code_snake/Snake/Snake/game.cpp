@@ -10,7 +10,7 @@
 using namespace std;
 
 bool gameOver;
-const int width = 80;
+const int width = 50;
 const int height = 20;
 int x, y, fruitX, fruitY, score;
 int tailX[100], tailY[100];
@@ -153,7 +153,7 @@ void SetUp()
 
 	x = width / 2 - 1;
 	y = height / 2 - 1;
-	fruitX = rand() % width -1;
+	fruitX = 1 + rand() % (width -1);
 	fruitY = rand() % height;
 
 	score = 0;
@@ -216,6 +216,15 @@ void Draw()
 	cout << endl;
 
 	cout << "Score: " << score << endl;
+
+	cout << endl;
+
+	cout << "Управление: " << endl;
+	cout << "W - вверх " << endl;
+	cout << "S - вниз " << endl;
+	cout << "D - вправо " << endl;
+	cout << "A - влево " << endl;
+	cout << "Еsc - выход";
 	
 }
 
@@ -299,7 +308,7 @@ void Logic()
 	if (x == fruitX && y == fruitY)
 	{
 		score += 10;
-		fruitX = rand() % width;
+		fruitX = rand() % width - 1;
 		fruitY = rand() % height;
 		nTail++;
 
@@ -361,6 +370,27 @@ void Logic()
 		GoToXY(21, 6);
 		cout << "Нажмите любую клавишу, чтобы начать сначала... (esc - выход)" << endl;
 	}
+	if (score == 500)
+	{
+		system("cls");
+		GoToXY(50, 10);
+		ConsoleCursorVisible(false, 100);
+		SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		GoToXY(20, 1);
+		cout << " _   _                                          _" << endl;
+		GoToXY(20, 2);
+		cout << "| |_| | _____  _____    __      __  __  ____   | |" << endl;
+		GoToXY(20, 3);
+		cout << " \\   / |     ||  |  |  |  | __ |  ||  ||    \\  |_|" << endl;
+		GoToXY(20, 4);
+		cout << "  | |  |  |  ||  |  |  |  |/  \\|  ||  ||  |  |  _" << endl;
+		GoToXY(20, 5);
+		cout << "  |_|  |_____| \\___/    \\___/\\___/ |__||__|__| |_| " << endl;
+		GoToXY(21, 7);
+		cout << "Нажмите любую клавишу, чтобы начать сначала... (esc - выход)" << endl;
+		gameOver = true;
+		nTail = 0;
+	}
 }
 //Основная функция змейки
 void snake() {
@@ -403,7 +433,16 @@ void DrawT(char field[height][wieght])
 	{
 		cout << field[i] << endl;
 	}
-	cout << "Для рисования нажмите Пробел...(esc - выход)";
+	cout << endl;
+
+	cout << "Управление: " << endl;
+	cout << endl;
+	cout << "Space - рисовать/стирать " << endl;
+	cout << "W - вверх " << endl;
+	cout << "S - вниз " << endl;
+	cout << "D - вправо " << endl;
+	cout << "A - влево " << endl;
+	cout << "Еsc - выход";
 }
 
 void CreateField(char field[height][wieght])
