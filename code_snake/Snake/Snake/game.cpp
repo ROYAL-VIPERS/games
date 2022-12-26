@@ -17,6 +17,7 @@ int tailX[100], tailY[100];
 int nTail;
 enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
 eDirection dir;
+int speed = 100;
 
 void snake();
 void turtle();
@@ -152,7 +153,7 @@ void SetUp()
 
 	x = width / 2 - 1;
 	y = height / 2 - 1;
-	fruitX = rand() % width;
+	fruitX = rand() % width -1;
 	fruitY = rand() % height;
 
 	score = 0;
@@ -173,7 +174,7 @@ void Draw()
 	{
 		for (int j = 0; j < width; j++)
 		{
-			if (j == 0 || j == width - 1)
+			if (j == 0 || j == width-1)
 			{
 				cout << "|";
 			}
@@ -183,12 +184,12 @@ void Draw()
 			}
 			else if (i == fruitY && j == fruitX)
 			{
-				cout << "O";
+				cout << "©";
 			}
 			else {
 				bool paint = false;
 				for (int k = 0; k < nTail; k++)
-				{
+				{	   
 					if (i == tailY[k] && j == tailX[k])
 					{
 						cout << "o";
@@ -301,6 +302,16 @@ void Logic()
 		fruitX = rand() % width;
 		fruitY = rand() % height;
 		nTail++;
+
+		if (speed > 10)
+		{
+			speed -= 2;
+		}
+		else
+		{
+			speed += 0;
+		}
+		
 	}
 
 	if (x < 0) 
@@ -357,16 +368,18 @@ void snake() {
 	SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
+	srand(time(NULL));//рандомный рандомайзер для rand()
 	bool restart = true;
 	while (restart)
 	{
+		speed = 100;//восстановление скорости змейки после окончания игры
 		SetUp();
 		while (!gameOver)
 		{
 			Draw();
 			Input();
 			Logic();
-			Sleep(20); //Ваня делает!
+			Sleep(speed); //Ваня сделал
 		}
 		if (_getch() == ESCAPE)
 		{
@@ -390,7 +403,7 @@ void DrawT(char field[height][wieght])
 	{
 		cout << field[i] << endl;
 	}
-	cout << "Для рисования нажмите E...(esc - выход)";
+	cout << "Для рисования нажмите Пробел...(esc - выход)";
 }
 
 void CreateField(char field[height][wieght])
@@ -413,23 +426,23 @@ void moveKEYS(char field[height][wieght], char playerAction, int playerCoords[2]
 	int lastcoords[2];
 	lastcoords[0] = playerCoords[0];
 	lastcoords[1] = playerCoords[1];
-	if (playerAction == 'ц' || playerAction == 'w')
+	if (playerAction == 'ц' || playerAction == 'w' || playerAction == 'W' || playerAction == 'Ц')
 	{
 		playerCoords[0]--;
 	}
-	else if (playerAction == 'ы' || playerAction == 's')
+	else if (playerAction == 'ы' || playerAction == 's' || playerAction == 'Ы' || playerAction == 'S')
 	{
 		playerCoords[0]++;
 	}
-	else if (playerAction == 'ф' || playerAction == 'a')
+	else if (playerAction == 'ф' || playerAction == 'a' || playerAction == 'Ф' || playerAction == 'A')
 	{
 		playerCoords[1]--;
 	}
-	else if (playerAction == 'в' || playerAction == 'd')
+	else if (playerAction == 'в' || playerAction == 'd' || playerAction == 'В' || playerAction == 'D')
 	{
 		playerCoords[1]++;
 	}
-	else if (playerAction == 'у' || playerAction == 'e')
+	else if (playerAction == ' ')
 	{
 		paint++;
 	}
