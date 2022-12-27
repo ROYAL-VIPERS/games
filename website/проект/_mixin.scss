@@ -1,0 +1,6 @@
+@mixin flex{
+    display: flex;
+    align-items: flex-start;
+    flex-flow: row wrap;
+    align-content: space-between;
+}
